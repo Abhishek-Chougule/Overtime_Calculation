@@ -69,11 +69,13 @@ class Overtime(Document):
             for nm in self.get('ot'):
                 if otid==nm.otid:
                     otname=nm.otname
-            for salary in sal:
-                    
+            for salary in sal:     
                     if otid==salary.employee:
-                      
-                        overtimesal=(((salary.base/30)/int(str(workinghours)[1]))*int(str(overtimerate)[0]))*int(str(otovertime)[1])
+                        h, m, s = workinghours.split(':')
+                        whours=(int(h) * 3600 + int(m) * 60 + int(s))/3600
+                        h, m, s = otovertime.split(':')
+                        othours=(int(h) * 3600 + int(m) * 60 + int(s))/3600
+                        overtimesal=(((salary.base/30)/float(str(whours)))*float(str(overtimerate)))*float(str(othours))
                         
                         row = self.append('tot', {})
                         row.totid = otid
@@ -84,13 +86,6 @@ class Overtime(Document):
                     else:
                         overtimesal=0
                     
-            
-                    
-
-        
-        
-            
-            
             
             
     @frappe.whitelist()
