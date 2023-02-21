@@ -53,7 +53,9 @@ class Overtime(Document):
             frappe.msgprint('Please Select From Date to proceed !')
         
         time_by_name = {}
+       
         for row in self.ot:
+            
             if row.otid in time_by_name:
                 total_time=dt.strptime(time_by_name[row.otid], '%H:%M:%S')+timedelta(hours=dt.strptime(row.otovertime, '%H:%M:%S').hour,minutes=dt.strptime(row.otovertime, '%H:%M:%S').minute,seconds=dt.strptime(row.otovertime, '%H:%M:%S').second)
                 time_by_name[row.otid] = total_time.strftime('%H:%M:%S')
@@ -75,14 +77,36 @@ class Overtime(Document):
                         whours=(int(h) * 3600 + int(m) * 60 + int(s))/3600
                         h, m, s = otovertime.split(':')
                         othours=(int(h) * 3600 + int(m) * 60 + int(s))/3600
-                        overtimesal=(((salary.base/30)/float(str(whours)))*float(str(overtimerate)))*float(str(othours))
                         
-                        row = self.append('tot', {})
-                        row.totid = otid
-                        row.totname=otname
-                        row.tottot = otovertime
-                        row.totsalary=overtimesal
+                    
+                        #number of days in month
+                        for row in self.ot:
+                            today = row.otdate
+                            frappe.msgprint(str(today))
+                            month = today.month
+                            year = today.year
+                            workingdays=30
+                            
+                            if(month == 1 or month == 3 or month == 5 or month == 7 or month == 8 or month == 10 or month == 12):
+                                workingdays=31
+                            elif((month == 2) and ((year%400==0) or (year%4==0 and year%100!=0))):	
+                                workingdays=29
+                            elif(month == 2):
+                                workingdays=28
+                            else:
+                                workingdays=30
+                            
+                          
+                            overtimesal=(((salary.base/workingdays)/float(str(whours)))*float(str(overtimerate)))*float(str(othours))
+                            if row.otid==otid:
+                                row = self.append('tot', {})
+                                row.totid = otid
+                                row.totname=otname
+                                row.tottot = otovertime
+                                row.totsalary=overtimesal
+                                break
                         break
+                        
                     else:
                         overtimesal=0
                     
