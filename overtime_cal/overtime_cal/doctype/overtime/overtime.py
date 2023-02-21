@@ -22,8 +22,11 @@ class Overtime(Document):
     @frappe.whitelist()
     def getempot(self): 
         doc = frappe.db.get_list("Employee Checkinout", fields=["time","employee","employee_name","overtime"])
-        company=frappe.db.get_list("Overtime Settings", fields=["minreqot","workinghours"])
-        
+        sal = frappe.db.get_list("Salary Structure Assignment", fields=["employee","base"])
+        company=frappe.db.get_list("Overtime Settings", fields=["minreqot","workinghours","overtimerate"])
+        overtimerate=""
+        overtimesal=""
+        workinghours=""
         if str(self.fromdate)!='None':
             for d in doc:
                 for row in self.get("emp"):
@@ -32,6 +35,8 @@ class Overtime(Document):
                             if str(d.overtime)!='None' and str(d.overtime)[0]!='-' and str(d.overtime)!='0':
                                 for s in company:
                                     self.minreqot=str(s.minreqot)
+                                    overtimerate=str(s.overtimerate)
+                                    workinghours=str(s.workinghours)
                                     
                                 if (dt.strptime(d.overtime, "%H:%M:%S") >= dt.strptime(str(self.minreqot), "%H:%M:%S")):
                                                                                                 
@@ -64,10 +69,23 @@ class Overtime(Document):
             for nm in self.get('ot'):
                 if otid==nm.otid:
                     otname=nm.otname
-            row = self.append('tot', {})
-            row.totid = otid
-            row.totname=otname
-            row.tottot = otovertime
+            for salary in sal:
+                    
+                    if otid==salary.employee:
+                      
+                        overtimesal=(((salary.base/30)/int(str(workinghours)[1]))*int(str(overtimerate)[0]))*int(str(otovertime)[1])
+                        
+                        row = self.append('tot', {})
+                        row.totid = otid
+                        row.totname=otname
+                        row.tottot = otovertime
+                        row.totsalary=overtimesal
+                        break
+                    else:
+                        overtimesal=0
+                    
+            
+                    
 
         
         

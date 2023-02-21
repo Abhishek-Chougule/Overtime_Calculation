@@ -17,6 +17,13 @@ frappe.ui.form.on('Overtime', {
 				frm.refresh_field('ot')
 				 }
 });
+frappe.ui.form.on('Overtime', {
+
+	getempot: function(frm) {
+				frm.clear_table("tot")
+				frm.refresh_field('tot')
+				 }
+});
 
 frappe.ui.form.on('Overtime', {
 	onload: function(frm) {
