@@ -10,14 +10,15 @@ class Overtime(Document):
     
     @frappe.whitelist()
     def getemplist(self):
-        doc = frappe.db.get_list("Employee", fields=["name","employee_name"])
+        doc = frappe.db.get_list("Employee", fields=["name","employee_name","isotallow"])
         for d in doc:
-            self.append("emp",
-            {
-                "empid": d.name,
-                "empname": d.employee_name,
-            },
-                        )
+            if d.isotallow==1:
+                self.append("emp",
+                {
+                    "empid": d.name,
+                    "empname": d.employee_name,
+                },
+                            )
                   
     @frappe.whitelist()
     def getempot(self): 
@@ -82,7 +83,7 @@ class Overtime(Document):
                         #number of days in month
                         for row in self.ot:
                             today = row.otdate
-                            frappe.msgprint(str(today))
+                            
                             month = today.month
                             year = today.year
                             workingdays=30
@@ -96,7 +97,9 @@ class Overtime(Document):
                             else:
                                 workingdays=30
                             
-                          
+                            #working days set to 1 for daily salary structure remove below line if want for monthly
+                            workingdays=1
+                            
                             overtimesal=(((salary.base/workingdays)/float(str(whours)))*float(str(overtimerate)))*float(str(othours))
                             if row.otid==otid:
                                 row = self.append('tot', {})
