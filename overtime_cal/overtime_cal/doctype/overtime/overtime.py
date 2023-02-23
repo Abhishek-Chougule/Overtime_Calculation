@@ -10,6 +10,7 @@ class Overtime(Document):
     
     @frappe.whitelist()
     def getemplist(self):
+        self.allow_import=1
         doc = frappe.db.get_list("Employee", fields=["name","employee_name","isotallow"])
         for d in doc:
             if d.isotallow==1:
