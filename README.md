@@ -1,8 +1,11 @@
 Overtime Calculation
 
    Steps:
-    
-         dff
+      Import Required Modules : 1. erpnext 2. hrms
+      Run below command in your bench :
+                       
+      bench get-app "https://github.com/Abhishek-Chougule/overtime_cal" --branch Mr-Abhi
+      
     
     
    Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
