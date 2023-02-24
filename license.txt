@@ -1,4 +1,4 @@
-MrDev License
+MIT License
 
 License: Copyright @2023 - Abhishek Chougule chouguleabhis@gmail.com
 Copyright (c) 2023 Abhishek Chougule
