@@ -163,6 +163,10 @@ app_license = "Copyright @2023 - Abhishek Chougule chouguleabhis@gmail.com"
 # User Data Protection
 # --------------------
 
+# Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
+# Copyright (c) 2023, by Abhishek Chougule developer.mrabhi@gmail.com
+# For license information, please see license.txt
+
 # user_data_fields = [
 #	{
 #		"doctype": "{doctype_1}",
