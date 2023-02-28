@@ -9,7 +9,8 @@
  "field_order": [
   "minreqot",
   "workinghours",
-  "overtimerate"
+  "overtimerate",
+  "grace_time"
  ],
  "fields": [
   {
@@ -34,11 +35,18 @@
    "fieldtype": "Data",
    "label": "Overtime Rate",
    "reqd": 1
+  },
+  {
+   "default": "00:45:00",
+   "fieldname": "grace_time",
+   "fieldtype": "Data",
+   "label": "Grace Time",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-21 16:27:29.978036",
+ "modified": "2023-02-28 17:27:35.200245",
  "modified_by": "Administrator",
  "module": "Overtime Cal",
  "name": "Overtime Settings",

@@ -8,6 +8,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cint, get_datetime, get_link_to_form
 from datetime import datetime as dt
+from datetime import timedelta
 
 
 from hrms.hr.doctype.attendance.attendance import (
@@ -27,10 +28,11 @@ class EmployeeCheckinout(Document):
 			self.overtime='0'
 			
 			doc=frappe.db.get_list("Employee Checkinout",fields=["time","employee","log_type"])
-			company=frappe.db.get_list("Overtime Settings", fields=["minreqot","workinghours"])
+			company=frappe.db.get_list("Overtime Settings", fields=["minreqot","workinghours","grace_time"])
 			for s in company:
                     
 				workinghours=str(s.workinghours)
+				grace_time=str(s.grace_time)
     
 			if self.log_type=="IN":
 					
@@ -56,7 +58,11 @@ class EmployeeCheckinout(Document):
 						
 					
 					else:
-						self.overtime=(dt.strptime(str(res), "%H:%M:%S") - dt.strptime(str(workinghours), "%H:%M:%S"))
+						workinghours_dt = dt.strptime(workinghours, "%H:%M:%S")
+						grace_time_dt = dt.strptime(grace_time, "%H:%M:%S")
+						total_delta = timedelta(hours=workinghours_dt.hour, minutes=workinghours_dt.minute, seconds=workinghours_dt.second) + timedelta(hours=grace_time_dt.hour, minutes=grace_time_dt.minute, seconds=grace_time_dt.second)
+						# total_time = str(total_delta)
+						self.overtime=(dt.strptime(str(res), "%H:%M:%S") - dt.strptime(str(total_delta), "%H:%M:%S"))
 					
 						
 		def validate(self):
